@@ -6,8 +6,8 @@ public class EnemyHealth : MonoBehaviour
 {
     public int fullHealth = 100;
 	public int curHealth;
-	public GameObject enemyActive;
-	public GameObject enemyDeactive;
+	//public GameObject enemyActive;
+	//public GameObject enemyDeactive;
 	private bool isDead;
 
 	void Awake ()
@@ -26,9 +26,10 @@ public class EnemyHealth : MonoBehaviour
 	}
 	void KillEnemy()
 	{
-	    isDead = true;
+	    /*isDead = true;
 		enemyActive.SetActive(true);
 		enemyDeactive.SetActive(false);
-		gameObject.SetActive(false);
+		gameObject.SetActive(false);*/
+		Destroy(gameObject);
 	}
 }

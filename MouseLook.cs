@@ -10,8 +10,13 @@ public class MouseLook : MonoBehaviour
     float xRottion = 0f;
     public Camera cam;
     public GameObject Weapon;
-    public GameObject Aim1;
-    public GameObject Aim2;
+    public GameObject Aim;
+    public GameObject Aim_Rifle;
+    public GameObject Aim_Pistol;
+    public GameObject Slot1;
+    public GameObject Slot3;
+    public GameObject PauseMenu;
+    public GameObject DeathScreen;
     public float ZoomIn = 30.0f;
     public float ZoomOut = 65.0f;
     void Start()
@@ -22,7 +27,7 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButton(1))
+        if(Input.GetMouseButton(1) && PauseMenu.activeInHierarchy == false && DeathScreen.activeInHierarchy == false)
         {
           zoomingIn();
         }
@@ -41,13 +46,20 @@ public class MouseLook : MonoBehaviour
     {
         cam.fieldOfView = ZoomIn;
         mouseSensitivity = 100.0f;
-        Weapon.transform.position = Aim2.transform.position;
         Crosshair.SetActive(false);
+        if(Slot1.activeInHierarchy)
+        {
+            Weapon.transform.position = Aim_Rifle.transform.position;
+        }
+        else if(Slot3.activeInHierarchy)
+        {
+            Weapon.transform.position = Aim_Pistol.transform.position;
+        }
     }
     public void zoomingOut()
     {
         cam.fieldOfView = ZoomOut;
-        Weapon.transform.position = Aim1.transform.position;
+        Weapon.transform.position = Aim.transform.position;
         mouseSensitivity = 200.0f;
         Crosshair.SetActive(true);
     }

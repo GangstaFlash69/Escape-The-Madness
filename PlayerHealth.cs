@@ -6,11 +6,18 @@ public class PlayerHealth : MonoBehaviour
 {
     public int fullHealth = 100;
 	public int CurHealth;
-	public bool niggaIsDead = false;
+	public bool rip = false;
+	PlayerMovement pm;
+	MouseLook ml;
+
+	public AudioSource Byebye;
+
+
 	
 	void Awake ()
 	{
 		CurHealth = fullHealth;
+		Byebye = GetComponent<AudioSource>();
 	}
 	public void GetHurt(int damageAmount)
 	{
@@ -21,11 +28,16 @@ public class PlayerHealth : MonoBehaviour
 	}
 	public void KillPlayer ()
 	{
-		niggaIsDead = true;
+		rip = true;
 		GameMenu gm = GameObject.Find("GameMenu").GetComponent<GameMenu>();
 		gm.DeathScreen.SetActive(true);
-		gameObject.GetComponent<PlayerMovement>().enabled = false;
-		MouseLook mc = GameObject.Find("MainCamera").GetComponent<MouseLook>();
-		mc.GetComponent<MouseLook>().enabled = false;
+
+		PlayerMovement pm = GameObject.Find("Player").GetComponent<PlayerMovement>();
+		pm.enabled = false;
+
+		MouseLook ml = GameObject.Find("MainCamera").GetComponent<MouseLook>();
+		ml.enabled = false;
+
+		Byebye.Play();
 	}
 }

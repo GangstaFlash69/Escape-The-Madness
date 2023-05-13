@@ -21,6 +21,6 @@ public class UIAmmo : MonoBehaviour
 	}
 	void LateUpdate ()
 	{
-		AmmoText.text = shp.AmmoLimit + " / " + shp.Ammo;
+		AmmoText.text = shp.AmmoCarry + " / " + shp.Ammo;
 	}
 }

@@ -6,8 +6,10 @@ public class Chase : MonoBehaviour
 {
     public Transform player;
     public UnityEngine.AI.NavMeshAgent agent;
+    public PlayerHealth ph;
     void Start()
     {
+        PlayerHealth ph = GameObject.Find("PlayerModel").GetComponent<PlayerHealth>();
         player = GameObject.Find("Player").transform;
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
@@ -22,5 +24,10 @@ public class Chase : MonoBehaviour
      {
         gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = true;
         Debug.Log("Stopping...");
+     }
+     void OnTriggerEnter()
+     {
+        PlayerHealth ph = GameObject.Find("PlayerModel").GetComponent<PlayerHealth>();
+        ph.KillPlayer();
      }
 }

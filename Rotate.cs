@@ -7,6 +7,6 @@ public class Rotate : MonoBehaviour
     public float speed;
     void Update()
     {
-		transform.Rotate (Vector3.left, speed);
+		transform.Rotate (Vector3.up, speed);
     }
 }

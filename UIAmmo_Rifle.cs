@@ -21,6 +21,6 @@ public class UIAmmo_Rifle : MonoBehaviour
 	}
 	void LateUpdate ()
 	{
-		AmmoText.text = shr.AmmoLimit + " / " + shr.Ammo;
+		AmmoText.text = shr.AmmoCarry + " / " + shr.Ammo;
 	}
 }
