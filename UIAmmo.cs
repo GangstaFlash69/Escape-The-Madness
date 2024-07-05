@@ -12,7 +12,7 @@ public class UIAmmo : MonoBehaviour
 	
 	void Start ()
 	{
-		shp = FindObjectOfType<Shooting_Pistol> ();
+		Shooting_Pistol shp = FindObjectOfType<Shooting_Pistol>();
 	}
 	void Awake ()
 	{

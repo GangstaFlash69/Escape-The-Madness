@@ -9,12 +9,14 @@ public class MouseLook : MonoBehaviour
     public Transform playerBody;
     float xRottion = 0f;
     public Camera cam;
-    public GameObject Weapon;
+    public GameObject WepCon;
     public GameObject Aim;
     public GameObject Aim_Rifle;
+    public GameObject Aim_SMG;
     public GameObject Aim_Pistol;
-    public GameObject Slot1;
-    public GameObject Slot3;
+    public GameObject SG20;
+    public GameObject SMG5;
+    public GameObject GL17;
     public GameObject PauseMenu;
     public GameObject DeathScreen;
     public float ZoomIn = 30.0f;
@@ -47,19 +49,25 @@ public class MouseLook : MonoBehaviour
         cam.fieldOfView = ZoomIn;
         mouseSensitivity = 100.0f;
         Crosshair.SetActive(false);
-        if(Slot1.activeInHierarchy)
+        if(SG20.activeInHierarchy)
         {
-            Weapon.transform.position = Aim_Rifle.transform.position;
+            WepCon.transform.position = Aim_Rifle.transform.position;
         }
-        else if(Slot3.activeInHierarchy)
+
+        else if(SMG5.activeInHierarchy)
         {
-            Weapon.transform.position = Aim_Pistol.transform.position;
+            WepCon.transform.position = Aim_SMG.transform.position;
+        }
+
+        else if(GL17.activeInHierarchy)
+        {
+            WepCon.transform.position = Aim_Pistol.transform.position;
         }
     }
     public void zoomingOut()
     {
         cam.fieldOfView = ZoomOut;
-        Weapon.transform.position = Aim.transform.position;
+        WepCon.transform.position = Aim.transform.position;
         mouseSensitivity = 200.0f;
         Crosshair.SetActive(true);
     }

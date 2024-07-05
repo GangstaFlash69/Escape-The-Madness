@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class WeaponControl : MonoBehaviour
 {
-// In here we have "Weapons Game Objects" and then "Weapon Effects" and last "Weapon UI(Text&Icon)"
+// In here we have "Weapons Game Objects" and then "Weapon Effects" and lastly "Weapon UI(Text&Icon)"
+    
+    public GameObject GL23;
+    public GameObject GL23_Effects;
+    public GameObject GL23_Text;
+    
     public GameObject CT22;
     public GameObject CT22_Effects;
     public GameObject CT22_Text;
-
-    public GameObject GG10;
-    public GameObject GG10_Effects;
-    public GameObject GG10_Text;
 
     public GameObject GT7s;
     public GameObject GT7s_Effects;
@@ -20,14 +21,14 @@ public class WeaponControl : MonoBehaviour
     public GameObject GT8;
     public GameObject GT8_Effects;
     public GameObject GT8_Text;
-
-    public GameObject FT5;
-    public GameObject FT5_Effects;
-    public GameObject FT5_Text;
-
+    
     public GameObject FHD;
     public GameObject FHD_Effects;
     public GameObject FHD_Text;
+
+    public GameObject GG17;
+    public GameObject GG17_Effects;
+    public GameObject GG17_Text;
 
     public GameObject FlashLight;
     public GameObject FlashLight_Icon;
@@ -39,6 +40,7 @@ public class WeaponControl : MonoBehaviour
     public GameObject Slot4;
 
     public bool haveGun;
+
     void Update()
     {
         if (Input.GetKey (KeyCode.Alpha1)) 
@@ -68,17 +70,17 @@ public class WeaponControl : MonoBehaviour
             haveGun = false;
             CT22_Text.SetActive (false);
         } 
+        
 
-
-		if (GG10.activeInHierarchy)
+		if (GL23.activeInHierarchy)
         {
             haveGun = true;
-            GG10_Text.SetActive (true);
+            GL23_Text.SetActive (true);
         }
 		else
         {
             haveGun = false;
-            GG10_Text.SetActive (false);
+            GL23_Text.SetActive (false);
         }
 
         if (GT7s.activeInHierarchy)
@@ -101,19 +103,17 @@ public class WeaponControl : MonoBehaviour
         {
             GT8_Text.SetActive (false);
             haveGun = false;
-        } 
-
-        if (FT5.activeInHierarchy)
+        }
+        if (GG17.activeInHierarchy)
         {
-            FT5_Text.SetActive (true);
+            GG17_Text.SetActive (true);
             haveGun = true;
         }
 		else
         {
-            FT5_Text.SetActive (false);
+            GG17_Text.SetActive (false);
             haveGun = false;
         }
-
         if (FHD.activeInHierarchy)
         {
             FHD_Text.SetActive (true);
@@ -124,6 +124,7 @@ public class WeaponControl : MonoBehaviour
             FHD_Text.SetActive (false);
             haveGun = false;
         }
+        
     }
         public void input1()
         {
@@ -134,7 +135,7 @@ public class WeaponControl : MonoBehaviour
             GT8_Effects.SetActive(false);
 
             Slot3.SetActive(false);
-            FT5_Effects.SetActive(false);
+            GG17_Effects.SetActive(false);
             FHD_Effects.SetActive(false);
 
             Slot4.SetActive(false);
@@ -143,12 +144,12 @@ public class WeaponControl : MonoBehaviour
         {
             Slot1.SetActive(false);
             CT22_Effects.SetActive(false);
-            GG10_Effects.SetActive(false);
+            GL23_Effects.SetActive(false);
 
             Slot2.SetActive(true);
 
             Slot3.SetActive(false);
-            FT5_Effects.SetActive(false);
+            GG17_Effects.SetActive(false);
             FHD_Effects.SetActive(false);
 
             Slot4.SetActive(false);
@@ -157,7 +158,7 @@ public class WeaponControl : MonoBehaviour
         {
             Slot1.SetActive(false);
             CT22_Effects.SetActive(false);
-            GG10_Effects.SetActive(false);
+            GL23_Effects.SetActive(false);
 
             Slot2.SetActive(false);
             GT7s_Effects.SetActive(false);
@@ -171,14 +172,14 @@ public class WeaponControl : MonoBehaviour
         {
             Slot1.SetActive(false);
             CT22_Effects.SetActive(false);
-            GG10_Effects.SetActive(false);
+            GL23_Effects.SetActive(false);
 
             Slot2.SetActive(false);
             GT7s_Effects.SetActive(false);
             GT8_Effects.SetActive(false);
 
             Slot3.SetActive(false);
-            FT5_Effects.SetActive(false);
+            GG17_Effects.SetActive(false);
             FHD_Effects.SetActive(false);
 
             Slot4.SetActive(true);
