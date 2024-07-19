@@ -17,18 +17,21 @@ public class Shooting_Rifle : MonoBehaviour
     Animator animator;
     public float ReloadTime = 2f;
     public bool isReloading = false;
+    public bool isAimming = false;
     [SerializeField] private GameObject spikeEffect;
     public int Ammo;
     public int AmmoCarry;
     public int MaxAmmo;
     public int LeftAmmo = 0;
-    private AudioSource Audio;
+   //private AudioSource Audio;
     public AudioClip RifleShot;
     public AudioClip Reloading1;
+    public AudioClip empty;
     public int Range;
     public int shotDamage;
-    private MeshRenderer target;
-    public LayerMask interactionlayer;
+   // private MeshRenderer target;
+   // public LayerMask interactionlayer;
+    public WeaponControl wc;
     public GameObject PauseMenu;
     public GameObject DeathScreen;
 
@@ -41,12 +44,13 @@ public class Shooting_Rifle : MonoBehaviour
 
     void Awake()
     {
-        Audio = GetComponent<AudioSource>();
+        //Audio = GetComponent<AudioSource>();
         animator = GunModel.GetComponent<Animator>();
     }
 
     void Start()
     {
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
         Ammo = MaxAmmo;
     }
 
@@ -54,14 +58,17 @@ public class Shooting_Rifle : MonoBehaviour
     {
         GunModel.GetComponent<Animator>().SetBool("isReloading", false);
         GunModel.GetComponent<Animator>().SetBool("Idle", true);
+        GunModel.GetComponent<Animator>().SetBool("isAimming", false);
     }
 
     void Update()
     {
-        if(Input.GetMouseButton(0) && Time.time > nextBullet && Ammo > 0 && isReloading == false)
+        if(Input.GetMouseButton(0) && Time.time > nextBullet && isReloading == false)
         {
-            if(PauseMenu.activeInHierarchy == false && DeathScreen.activeInHierarchy == false)
+            if(Ammo > 0)
             {
+                if(PauseMenu.activeInHierarchy == false && DeathScreen.activeInHierarchy == false)
+                {
                 /*if(isReloading == true)
                 {
                     StopCoroutine(Reload());
@@ -94,18 +101,21 @@ public class Shooting_Rifle : MonoBehaviour
 				   eh3.GetHit (shotDamage);
                  }
                }
-                Audio.PlayOneShot(RifleShot);
+                wc.audio.PlayOneShot(RifleShot);
                 //Audio.pitch = Random.Range(1.0f, 1.1f);
                 Effects.SetActive (true);
                 Flare.Play();
+                }
             }
+            else if(Input.GetMouseButtonDown(0))
+            wc.audio.PlayOneShot(empty);
         }
         else GunModel.GetComponent<Animator>().SetBool("Idle", true);
 
         if (Input.GetKeyDown(KeyCode.R) && Ammo < MaxAmmo && AmmoCarry != 0f && isReloading == false)
         {
             StartCoroutine(Reload());
-            Audio.PlayOneShot(Reloading1);
+            wc.audio.PlayOneShot(Reloading1);
             return;
         }
     }

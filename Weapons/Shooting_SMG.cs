@@ -22,15 +22,17 @@ public class Shooting_SMG : MonoBehaviour
     public int AmmoCarry;
     public int MaxAmmo;
     public int LeftAmmo = 0;
-    private AudioSource Audio;
+    //AudioSource Audio;
     public AudioClip GunShot;
     public AudioClip Reloading;
+    public AudioClip empty;
     public int Range;
     public int shotDamage;
-    private MeshRenderer target;
-    public LayerMask interactionlayer;
+    //private MeshRenderer target;
+    //public LayerMask interactionlayer;
     public GameObject PauseMenu;
     public GameObject DeathScreen;
+    public WeaponControl wc;
 
     private void OnDrawGizmos()
     {
@@ -41,7 +43,7 @@ public class Shooting_SMG : MonoBehaviour
 
     void Awake()
     {
-        Audio = GetComponent<AudioSource>();
+        //Audio = GetComponent<AudioSource>();
         animator = GunModel.GetComponent<Animator>();
     }
 
@@ -58,15 +60,12 @@ public class Shooting_SMG : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetMouseButton(0) && Time.time > nextBullet && Ammo > 0 && isReloading == false)
+        if(Input.GetMouseButton(0) && Time.time > nextBullet && isReloading == false)
         {
-            if(PauseMenu.activeInHierarchy == false && DeathScreen.activeInHierarchy == false)
+            if(Ammo > 0)
             {
-                /*if(isReloading == true)
-                {
-                    StopCoroutine(Reload());
-                    isReloading = false;
-                }*/
+                if(PauseMenu.activeInHierarchy == false && DeathScreen.activeInHierarchy == false)
+              {
                 Ammo--;
                 LeftAmmo = 0;
                 nextBullet = Time.time + firerate;
@@ -94,18 +93,22 @@ public class Shooting_SMG : MonoBehaviour
 				   eh3.GetHit (shotDamage);
                  }
                }
-                Audio.PlayOneShot(GunShot);
+                //Audio.PlayOneShot(GunShot);
                 //Audio.pitch = Random.Range(1.0f, 1.1f);
+                wc.audio.PlayOneShot(GunShot);
                 Effects.SetActive (true);
                 Flare.Play();
+              }
             }
+            else if(Input.GetMouseButtonDown(0))
+            wc.audio.PlayOneShot(empty);
         }
         else GunModel.GetComponent<Animator>().SetBool("Idle", true);
 
         if (Input.GetKeyDown(KeyCode.R) && Ammo < MaxAmmo && AmmoCarry != 0f && isReloading == false)
         {
             StartCoroutine(Reload());
-            Audio.PlayOneShot(Reloading);
+            wc.audio.PlayOneShot(Reloading);
             return;
         }
     }
@@ -136,7 +139,6 @@ public class Shooting_SMG : MonoBehaviour
             AmmoCarry += Ammo;
             Ammo = MaxAmmo;
         }
-        //isReloading = false;
         GunModel.GetComponent<Animator>().SetBool("isReloading", false);
         isReloading = false;
     }

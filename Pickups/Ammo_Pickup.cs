@@ -8,12 +8,18 @@ public class Ammo_Pickup : MonoBehaviour
     Shooting_Pistol shp2;
 	public int AmmoBox = 30;
     public int HalfBox = 15;
-    ImageChange im;
-    WeaponControl wc;
+    public ImageChange im;
+    public WeaponControl wc;
     GameObject Player;
     Transform playerTransform;
     float dist;
     public bool isGreen;
+    public AudioClip pickupclip;
+    void Start()
+    {
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>();
+    }
 
     void OnMouseEnter()
     {
@@ -33,28 +39,26 @@ public class Ammo_Pickup : MonoBehaviour
         GameObject Player = GameObject.Find("Player");
         playerTransform = Player.transform;  
         float dist = Vector3.Distance (playerTransform.position, transform.position);
-        if(Input.GetKey(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             if(dist <= 3f)
             {
                 if(isGreen)
                 {
-                     WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
-                    if(wc.FT5.activeInHierarchy)
+                    WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+                    if(wc.GN17.activeInHierarchy)
                     {
+                        GetAmmo1();
                         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
                         im.GetComponent<ImageChange>().setWhite();
                         Debug.Log("You have picked up " + (AmmoBox) + " Rounds !");
-                        GetAmmo1();
-                        Destroy(gameObject);
                     }
                     else if(wc.FHD.activeInHierarchy)
                     {
+                        GetAmmo2();
                         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>();
                         im.GetComponent<ImageChange>().setWhite();
                         Debug.Log("You have picked up " + (AmmoBox) + " Rounds !");
-                        GetAmmo2();
-                        Destroy(gameObject);
                     }
                     else
                     {
@@ -68,12 +72,18 @@ public class Ammo_Pickup : MonoBehaviour
     }
     void GetAmmo1()
     {
-        Shooting_Pistol shp = GameObject.Find("FT-5").GetComponent<Shooting_Pistol> ();
-        shp.AmmoLimit = shp.AmmoLimit + AmmoBox;
+        Shooting_Pistol shp = GameObject.Find("GN-17_Shooting").GetComponent<Shooting_Pistol> ();
+        shp.AmmoCarry = shp.AmmoCarry + AmmoBox;
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
     void GetAmmo2()
     {
-        Shooting_Pistol shp2 = GameObject.Find("FHD").GetComponent<Shooting_Pistol> ();
-        shp2.AmmoLimit = shp2.AmmoLimit + AmmoBox;
+        Shooting_Pistol shp2 = GameObject.Find("FHD_Shooting").GetComponent<Shooting_Pistol> ();
+        shp2.AmmoCarry = shp2.AmmoCarry + AmmoBox;
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
 }

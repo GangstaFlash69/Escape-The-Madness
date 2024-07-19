@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlashLight_Pickup : MonoBehaviour
+public class PaperAudio : MonoBehaviour
 {
-   WeaponControl wc;
-    ImageChange im;
+     ImageChange im;
     GameObject Player;
+    public GameObject Wall;
     Transform playerTransform;
     public float dist;
     public bool isGreen;
-    public AudioSource audio;
-    public AudioClip pickupclip;
+    public AudioSource LittleGirlVoice;
 
-    void Start()
+    void Awake()
     {
-        audio = GetComponent<AudioSource>();
-    }
+        LittleGirlVoice = GetComponent<AudioSource>();
+	}
 
     void OnMouseEnter()
     {
@@ -35,7 +34,7 @@ public class FlashLight_Pickup : MonoBehaviour
         Player = GameObject.Find("Player");
         playerTransform = Player.transform;
         float dist = Vector3.Distance (playerTransform.position, transform.position);
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKey(KeyCode.E))
         {
             if(dist <= 3f)
             {
@@ -50,13 +49,11 @@ public class FlashLight_Pickup : MonoBehaviour
     {
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
         im.GetComponent<ImageChange>().setWhite();
-        Debug.Log("You have picked up a Flash Light");
-        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
-        wc.FlashLight.SetActive (true);
-        wc.FlashLight_Icon.SetActive (true);
-        audio.PlayOneShot(pickupclip);
+        Debug.Log("You have picked up a white paper!");
+        Destroy(Wall);
         Destroy(GetComponent<MeshCollider>());
         Destroy(GetComponent<MeshRenderer>());
-        Destroy(gameObject, 2f);
+        LittleGirlVoice.Play();
+        Destroy(gameObject, 10);
     }
 }

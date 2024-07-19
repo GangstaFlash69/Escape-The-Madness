@@ -14,6 +14,12 @@ public class AmmoRifle_Pickup : MonoBehaviour
     Transform playerTransform;
     float dist;
     public bool isGreen;
+    AudioSource audio;
+    public AudioClip pickupclip;
+    void Start()
+    {
+        audio = gameObject.GetComponent<AudioSource>();
+    }
 
     void OnMouseEnter()
     {
@@ -33,28 +39,26 @@ public class AmmoRifle_Pickup : MonoBehaviour
         GameObject Player = GameObject.Find("Player");
         playerTransform = Player.transform;  
         float dist = Vector3.Distance (playerTransform.position, transform.position);
-        if(Input.GetKey(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             if(dist <= 3f)
             {
                 if(isGreen)
                 {
                     WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
-                    if(wc.GG10.activeInHierarchy)
+                    if(wc.CAT9.activeInHierarchy)
                     {
                         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
                         im.GetComponent<ImageChange>().setWhite();
                         Debug.Log("You have picked up " + (AmmoBox) + " Rounds !");
                         GetAmmo2();
-                        Destroy(gameObject);
                     }
-                    else if(wc.CT22.activeInHierarchy)
+                    else if(wc.EM107.activeInHierarchy)
                     {
                         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>();
                         im.GetComponent<ImageChange>().setWhite();
                         Debug.Log("You have picked up " + (AmmoBox) + " Rounds !");
                         GetAmmo1();
-                        Destroy(gameObject);
                     }
                     else
                     {
@@ -69,12 +73,20 @@ public class AmmoRifle_Pickup : MonoBehaviour
 
     void GetAmmo1()
     {
-        Shooting_Rifle shr = GameObject.Find("CT-22").GetComponent<Shooting_Rifle> ();
-        shr.AmmoLimit = shr.AmmoLimit + AmmoBox;
+        Shooting_Rifle shr = GameObject.Find("EM-107_Shooting").GetComponent<Shooting_Rifle> ();
+        shr.AmmoCarry = shr.AmmoCarry + AmmoBox;
+        audio.PlayOneShot(pickupclip);
+        Destroy(GetComponent<MeshCollider>());
+        Destroy(GetComponent<MeshRenderer>());
+        Destroy(gameObject, 2f);
     }
     void GetAmmo2()
     {
-        Shooting_Rifle shr2 = GameObject.Find("GG-10").GetComponent<Shooting_Rifle> ();
-        shr2.AmmoLimit = shr2.AmmoLimit + AmmoBox;
+        Shooting_Rifle shr2 = GameObject.Find("CAT-9_Shooting").GetComponent<Shooting_Rifle> ();
+        shr2.AmmoCarry = shr2.AmmoCarry + AmmoBox;
+        audio.PlayOneShot(pickupclip);
+        Destroy(GetComponent<MeshCollider>());
+        Destroy(GetComponent<MeshRenderer>());
+        Destroy(gameObject, 2f);
     }
 }
