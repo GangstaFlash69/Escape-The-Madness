@@ -5,6 +5,8 @@ using UnityEngine;
 public class Shooting_SMG : MonoBehaviour
 {
     public GameObject BulletPref;
+    public GameObject GunModel;
+    public Camera cam;
     public bool IsShooting = false;
     public ParticleSystem Flare;
     public GameObject Effects;
@@ -12,30 +14,37 @@ public class Shooting_SMG : MonoBehaviour
     private int bulletSpeed = 5;
     public float firerate;
     public float nextBullet;
-    public Animator animator;
+    Animator animator;
     public float ReloadTime = 2f;
-    [SerializeField] private GameObject BulletHole;
+    public bool isReloading = false;
+    [SerializeField] private GameObject spikeEffect;
     public int Ammo;
-    public int AmmoLimit;
+    public int AmmoCarry;
     public int MaxAmmo;
     public int LeftAmmo = 0;
-    private AudioSource Audio;
-    public AudioClip Reloading1;
+    //AudioSource Audio;
+    public AudioClip GunShot;
+    public AudioClip Reloading;
+    public AudioClip empty;
     public int Range;
     public int shotDamage;
-    private MeshRenderer target;
-    public LayerMask interactionlayer;
+    //private MeshRenderer target;
+    //public LayerMask interactionlayer;
+    public GameObject PauseMenu;
+    public GameObject DeathScreen;
+    public WeaponControl wc;
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.forward * Range);
+        Gizmos.DrawRay(cam.transform.position, cam.transform.forward * Range);
+       // Gizmos.DrawRay(transform.position, transform.forward * Range);
     }
 
     void Awake()
     {
-        Audio = GetComponent<AudioSource>();
-        animator = gameObject.GetComponent<Animator>();
+        //Audio = GetComponent<AudioSource>();
+        animator = GunModel.GetComponent<Animator>();
     }
 
     void Start()
@@ -45,77 +54,92 @@ public class Shooting_SMG : MonoBehaviour
 
     void OnEnable()
     {
-        animator.SetBool("isReloading", false);
-       // animator.SetBool("Aiming", false);
-        animator.SetBool("Idle", true);
+        GunModel.GetComponent<Animator>().SetBool("isReloading", false);
+        GunModel.GetComponent<Animator>().SetBool("Idle", true);
     }
 
     void Update()
     {
-        if(Input.GetMouseButton(0) && Time.time > nextBullet && Ammo > 0)
+        if(Input.GetMouseButton(0) && Time.time > nextBullet && isReloading == false)
         {
+            if(Ammo > 0)
+            {
+                if(PauseMenu.activeInHierarchy == false && DeathScreen.activeInHierarchy == false)
+              {
                 Ammo--;
                 LeftAmmo = 0;
                 nextBullet = Time.time + firerate;
-                animator.SetBool("Idle", false);
+                GunModel.GetComponent<Animator>().SetBool("Idle", false);
                 GameObject Bullet = Instantiate(BulletPref, bulletSpawner.position, bulletSpawner.rotation);
                 Bullet.GetComponent<Rigidbody>().velocity = transform.right * bulletSpeed;
                 RaycastHit hit;
-               if(Physics.Raycast (transform.position, transform.forward, out hit, Range))
+               if(Physics.Raycast (cam.transform.position, cam.transform.forward, out hit, Range))
                {
-                 GameObject obj = Instantiate(BulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+                 GameObject obj = Instantiate(spikeEffect, hit.point, Quaternion.LookRotation(hit.normal));
                  obj.transform.position += obj.transform.forward / 1000;
                  EnemyAiTutorial eh = hit.collider.GetComponent<EnemyAiTutorial> ();
 			     if (eh != null) 
                  {
 				   eh.TakeDamage (shotDamage);
                  }
-                  EnemyHealth eh2 = hit.collider.GetComponent<EnemyHealth> ();
+                 EnemyHealth eh2 = hit.collider.GetComponent<EnemyHealth> ();
                  if (eh2 != null) 
                  {
 				   eh2.GetHurt (shotDamage);
                  }
+                    Target eh3 = hit.collider.GetComponent<Target> ();
+                 if (eh3 != null) 
+                 {
+				   eh3.GetHit (shotDamage);
+                 }
                }
-                Audio.Play();
+                //Audio.PlayOneShot(GunShot);
+                //Audio.pitch = Random.Range(1.0f, 1.1f);
+                wc.audio.PlayOneShot(GunShot);
                 Effects.SetActive (true);
                 Flare.Play();
+              }
+            }
+            else if(Input.GetMouseButtonDown(0))
+            wc.audio.PlayOneShot(empty);
         }
-        else animator.SetBool("Idle", true);
+        else GunModel.GetComponent<Animator>().SetBool("Idle", true);
 
-        if (Input.GetKeyDown(KeyCode.R) && Ammo < MaxAmmo && AmmoLimit != 0f)
+        if (Input.GetKeyDown(KeyCode.R) && Ammo < MaxAmmo && AmmoCarry != 0f && isReloading == false)
         {
             StartCoroutine(Reload());
-            Audio.PlayOneShot(Reloading1);
+            wc.audio.PlayOneShot(Reloading);
             return;
         }
     }
 
     IEnumerator Reload()
     {
-        animator.SetBool("isReloading", true);
+        GunModel.GetComponent<Animator>().SetBool("isReloading", true);
+        isReloading = true;
         yield return new WaitForSeconds(ReloadTime);
-        if(AmmoLimit < MaxAmmo)
+        if(AmmoCarry < MaxAmmo)
         {
-            if (Ammo + AmmoLimit <= MaxAmmo)
+            if (Ammo + AmmoCarry <= MaxAmmo)
             {
-                Ammo = Ammo + AmmoLimit;
+                Ammo = Ammo + AmmoCarry;
             }
             else
             {
-                Ammo = Ammo + AmmoLimit;
+                Ammo = Ammo + AmmoCarry;
                 LeftAmmo = Ammo - MaxAmmo;
-                AmmoLimit = LeftAmmo;
+                AmmoCarry = LeftAmmo;
                 Ammo = MaxAmmo;
             }
-            AmmoLimit = LeftAmmo;
+            AmmoCarry = LeftAmmo;
         }
         else
         {
-            AmmoLimit -= MaxAmmo;
-            AmmoLimit += Ammo;
+            AmmoCarry -= MaxAmmo;
+            AmmoCarry += Ammo;
             Ammo = MaxAmmo;
         }
-        //isReloading = false;
-        animator.SetBool("isReloading", false);
+        GunModel.GetComponent<Animator>().SetBool("isReloading", false);
+        isReloading = false;
     }
 }

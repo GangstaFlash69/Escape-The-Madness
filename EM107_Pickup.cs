@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlashLight_Pickup : MonoBehaviour
+public class EM107_Pickup : MonoBehaviour
 {
-   WeaponControl wc;
+    WeaponControl wc;
     ImageChange im;
     GameObject Player;
     Transform playerTransform;
     public float dist;
     public bool isGreen;
-    public AudioSource audio;
     public AudioClip pickupclip;
+    public AudioSource audio;
+    public GameObject gunModel;
 
     void Start()
     {
@@ -32,7 +33,7 @@ public class FlashLight_Pickup : MonoBehaviour
     }
     void Update()
     {  
-        Player = GameObject.Find("Player");
+        GameObject Player = GameObject.Find("Player");
         playerTransform = Player.transform;
         float dist = Vector3.Distance (playerTransform.position, transform.position);
         if(Input.GetKeyDown(KeyCode.E))
@@ -41,7 +42,23 @@ public class FlashLight_Pickup : MonoBehaviour
             {
                 if(isGreen)
                 {
-                    pickup();
+                    WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+                    if(wc.CAT9.activeInHierarchy)
+                    {
+                        Debug.Log("You cannot carry more than 1 Rifle");
+                        ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
+                        im.GetComponent<ImageChange>().setRed();
+                    }
+                    else if(wc.hasRifle == true)
+                    {
+                        Debug.Log("You cannot carry more than 1 Rifle");
+                        ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
+                        im.GetComponent<ImageChange>().setRed();
+                    }
+                    else
+                    {
+                        pickup();
+                    }
                 }
             }
         }
@@ -50,13 +67,13 @@ public class FlashLight_Pickup : MonoBehaviour
     {
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
         im.GetComponent<ImageChange>().setWhite();
-        Debug.Log("You have picked up a Flash Light");
+        isGreen = false;
+        Debug.Log("You have picked up a EM-107 Rifle");
         WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
-        wc.FlashLight.SetActive (true);
-        wc.FlashLight_Icon.SetActive (true);
-        audio.PlayOneShot(pickupclip);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
+        wc.EM107.SetActive (true);
+        wc.hasRifle = true;
+        GetComponent<AudioSource>().PlayOneShot(pickupclip);
+        gunModel.SetActive (false);
         Destroy(gameObject, 2f);
     }
 }

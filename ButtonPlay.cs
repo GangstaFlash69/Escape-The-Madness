@@ -62,6 +62,6 @@ public class ButtonPlay : MonoBehaviour
 
         Destroy(GetComponent<MeshCollider>());
         Destroy(GetComponent<MeshRenderer>());
-        Destroy(Wall, 7);
+        Destroy(Wall, 9);
     }
 }

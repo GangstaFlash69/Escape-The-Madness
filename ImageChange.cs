@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ImageChange : MonoBehaviour
 {
-    Image m_Image;
+    public Image m_Image;
 
     public void Start()
     {

@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameMenu : MonoBehaviour
 {
     public GameObject Player;
+    PlayerMovement pm;
+	MouseLook ml;
     public GameObject PauseMenu;
     public GameObject DeathScreen;
     public GameObject HUD;
@@ -18,13 +20,8 @@ public class GameMenu : MonoBehaviour
         if(Input.GetKey(KeyCode.Escape) && DeathScreen.activeInHierarchy == false)
         {
             if(IsPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+            ResumeGame();
+            else PauseGame();
         }
         if(DeathScreen.activeInHierarchy && Input.GetKey(KeyCode.Space))
         {
@@ -55,11 +52,9 @@ public class GameMenu : MonoBehaviour
     {
 
     }
-
     public void MainGameMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene ("Scene0");
     }
-
 }
