@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class PaperAudio : MonoBehaviour
 {
-     ImageChange im;
+    ImageChange im;
     GameObject Player;
     public GameObject Wall;
     Transform playerTransform;
     public float dist;
     public bool isGreen;
-    public AudioSource LittleGirlVoice;
-
-    void Awake()
-    {
-        LittleGirlVoice = GetComponent<AudioSource>();
-	}
-
+    public AudioClip voiceLine;
+    WeaponControl wc;
     void OnMouseEnter()
     {
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>();
@@ -50,10 +45,9 @@ public class PaperAudio : MonoBehaviour
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
         im.GetComponent<ImageChange>().setWhite();
         Debug.Log("You have picked up a white paper!");
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(voiceLine);
         Destroy(Wall);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        LittleGirlVoice.Play();
-        Destroy(gameObject, 10);
+        Destroy(gameObject);
     }
 }

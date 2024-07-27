@@ -10,13 +10,8 @@ public class Paper3 : MonoBehaviour
     Transform playerTransform;
     public float dist;
     public bool isGreen;
-    private AudioSource LittleGirlVoice;
+    private AudioClip LittleGirlVoice;
     public GameObject Spawner;
-
-    void Awake()
-    {
-        LittleGirlVoice = GetComponent<AudioSource>();
-	}
 
     void OnMouseEnter()
     {
@@ -53,9 +48,8 @@ public class Paper3 : MonoBehaviour
         Debug.Log("You have picked up a white paper!");
         Spawner.SetActive(true);
         Destroy(Wall);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        LittleGirlVoice.Play();
-        Destroy(gameObject, 10);
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(LittleGirlVoice);
+        Destroy(gameObject);
     }
 }

@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class FlashLight_Pickup : MonoBehaviour
 {
-   WeaponControl wc;
+    WeaponControl wc;
     ImageChange im;
     GameObject Player;
     Transform playerTransform;
     public float dist;
     public bool isGreen;
-    public AudioSource audio;
     public AudioClip pickupclip;
-
-    void Start()
-    {
-        audio = GetComponent<AudioSource>();
-    }
 
     void OnMouseEnter()
     {
@@ -54,9 +48,7 @@ public class FlashLight_Pickup : MonoBehaviour
         WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
         wc.FlashLight.SetActive (true);
         wc.FlashLight_Icon.SetActive (true);
-        audio.PlayOneShot(pickupclip);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        Destroy(gameObject, 2f);
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
 }

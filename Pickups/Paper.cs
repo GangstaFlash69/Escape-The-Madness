@@ -9,12 +9,8 @@ public class Paper : MonoBehaviour
     Transform playerTransform;
     public float dist;
     public bool isGreen;
-    private AudioSource Take;
-
-    void Awake()
-    {
-        Take = GetComponent<AudioSource>();
-	}
+    public AudioClip take;
+    WeaponControl wc;
 
     void OnMouseEnter()
     {
@@ -49,9 +45,8 @@ public class Paper : MonoBehaviour
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>(); 
         im.GetComponent<ImageChange>().setWhite();
         Debug.Log("You have picked up an objective paper!");
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        Take.Play();
-        Destroy(gameObject, 3f);
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(take);
+        Destroy(gameObject);
     }
 }

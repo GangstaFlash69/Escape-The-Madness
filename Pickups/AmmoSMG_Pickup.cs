@@ -7,18 +7,13 @@ public class AmmoSMG_Pickup : MonoBehaviour
     Shooting_SMG shs;
     Shooting_SMG shs2;
 	public int AmmoBox = 30;
+    WeaponControl wc;
     ImageChange im;
     GameObject Player;
     Transform playerTransform;
     float dist;
     public bool isGreen;
-    AudioSource audio;
     public AudioClip pickupclip;
-
-    void Start()
-    {
-        audio = gameObject.GetComponent<AudioSource>();
-    }
     void OnMouseEnter()
     {
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>();
@@ -72,18 +67,16 @@ public class AmmoSMG_Pickup : MonoBehaviour
     {
         Shooting_SMG shs = GameObject.Find("SUP5_Shooting").GetComponent<Shooting_SMG> ();
         shs.AmmoCarry = shs.AmmoCarry + AmmoBox;
-        audio.PlayOneShot(pickupclip);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        Destroy(gameObject, 2f);
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
     void GetAmmo2()
     {
         Shooting_SMG shs2 = GameObject.Find("GT-8").GetComponent<Shooting_SMG> ();
         shs2.AmmoCarry = shs2.AmmoCarry + AmmoBox;
-        audio.PlayOneShot(pickupclip);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        Destroy(gameObject, 2f);
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
 }

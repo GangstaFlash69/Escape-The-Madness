@@ -8,8 +8,8 @@ public class Ammo_Pickup : MonoBehaviour
     Shooting_Pistol shp2;
 	public int AmmoBox = 30;
     public int HalfBox = 15;
-    public ImageChange im;
-    public WeaponControl wc;
+    ImageChange im;
+    WeaponControl wc;
     GameObject Player;
     Transform playerTransform;
     float dist;

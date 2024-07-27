@@ -11,14 +11,6 @@ public class SMG5_Pickup : MonoBehaviour
     public float dist;
     public bool isGreen;
     public AudioClip pickupclip;
-    public AudioSource audio;
-    public GameObject gunModel;
-
-    void Start()
-    {
-        audio = GetComponent<AudioSource>();
-    }
-
     void OnMouseEnter()
     {
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>();
@@ -72,8 +64,7 @@ public class SMG5_Pickup : MonoBehaviour
         WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
         wc.SUP5.SetActive (true);
         wc.hasSMG = true;
-        GetComponent<AudioSource>().PlayOneShot(pickupclip);
-        gunModel.SetActive (false);
-        Destroy(gameObject, 2f);
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
 }

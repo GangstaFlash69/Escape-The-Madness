@@ -14,13 +14,7 @@ public class AmmoRifle_Pickup : MonoBehaviour
     Transform playerTransform;
     float dist;
     public bool isGreen;
-    AudioSource audio;
     public AudioClip pickupclip;
-    void Start()
-    {
-        audio = gameObject.GetComponent<AudioSource>();
-    }
-
     void OnMouseEnter()
     {
         ImageChange im = GameObject.Find("Crosshair").GetComponent<ImageChange>();
@@ -75,18 +69,16 @@ public class AmmoRifle_Pickup : MonoBehaviour
     {
         Shooting_Rifle shr = GameObject.Find("EM-107_Shooting").GetComponent<Shooting_Rifle> ();
         shr.AmmoCarry = shr.AmmoCarry + AmmoBox;
-        audio.PlayOneShot(pickupclip);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        Destroy(gameObject, 2f);
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
     void GetAmmo2()
     {
         Shooting_Rifle shr2 = GameObject.Find("CAT-9_Shooting").GetComponent<Shooting_Rifle> ();
         shr2.AmmoCarry = shr2.AmmoCarry + AmmoBox;
-        audio.PlayOneShot(pickupclip);
-        Destroy(GetComponent<MeshCollider>());
-        Destroy(GetComponent<MeshRenderer>());
-        Destroy(gameObject, 2f);
+        WeaponControl wc = GameObject.Find("WeaponController").GetComponent<WeaponControl>();
+        wc.audio.PlayOneShot(pickupclip);
+        Destroy(gameObject);
     }
 }
